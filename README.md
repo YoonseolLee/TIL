@@ -35,3 +35,53 @@
 7. String[] arr = my_string.split("")
 
 8. 나눗셈을 할 때는 반드시 하나의 값이 실수(double)여야한다.
+
+9. StringBuilder는 StringBuffer와 비슷한 자료형으로, 사용법도 같다. StringBuffer는 멀티 스레드 환경에서 안전하고, StringBuilder는 StringBuffer보다 성능이 우수하다. 따라서 동기화를 고려할 필요가 없는 상황에서는 StringBuffer보다 StringBuilder를 사용하는 것이 유리하다. 멀티 스레드 환경에는 StringBuffer를 쓰자.
+
+## 2023.09.30
+
+### 이것이 자바다
+
+1. 함수형 프로그래밍이란 함수를 정의하고 이 함수를 데이터 처리부로 보내 데이터를 처리하는 기법이다.
+
+2. 인터페이스의 익명 구현 객체를 람다식으로 표현하기 위해선, 인터페이스가 단 하나의 추상메소드만 가져야 한다. 그리고 인터페이스가 단 하나의 추상 메소드를 가질 때, 이를 함수형 인터페이스라고 한다.
+
+3. 람다의 전반적인 것들을 배웠다. 익숙해지려면 많은 수련이 필요할 것이다.
+
+### git
+
+4.  브랜치 생성은 git branch 브랜치명
+    브랜치 이동은 git switch 브랜치명
+    브랜치 합치기는 main/master 브랜치로 이동한 뒤에 git merge 브랜치명
+    브랜치마다 commit 내역을 그래프로 보고싶으면 git log --graph --oneline --all
+    브랜치 합칠 때 conflict가 발생하면 파일열어서 수정하고 git add, git commit 하기
+
+5.  3-way merge
+    fast-forward
+    rebase
+    squash
+
+### 프로그래머스
+
+6. 메서드를 호출할 때, 메서드에 전달되는 인수(매개변수)는 변수 또는 리터럴 값으로 전달되어야 한다.
+
+7. 메서드를 호출하더라도, 메서드를 변수에 저장(ex.a=method())하지 않으면 해당 메소드를 사용할 수 없다.
+
+8. 나머지가 있다는 것은 곧 반올림이 가능할 수도 있다는걸 내포한다(0.5654 -> 0.6, use ceil).
+
+9. charAt: String으로 저장된 문자열 중에서 한 글자만 선택해서 char타입으로 변환해주는 메소드이다.
+   isLowerCase / isUpperCase: 소문자/대문자 여부를 확인한다.
+   toLowerCase/ toUpperCase: 소문자/대문자로 변환한다.
+
+### JavaPlayground
+
+10. @BeforeEach: 이 어노테이션을 사용하면 각각의 테스트 메서드가 실행되기 전에 공통적인 설정 또는 초기화 작업을 수행한다.
+
+11. isEqualTo는 값(내용)을 비교하며, 자료형이 서로 다른 경우엔 쓰지 말자.
+
+12. ParameterizedTest: 여러 개의 테스트를 한번에 작성하기 위한 테스트
+
+13. 주로 세트 또는 컬렉션과 단일 값 간의 동등성을 확인하려면
+    `assertThat(numbers.contains(input)).isTrue();`와 같이 `contains` 메서드를 사용하는 것이 좋다. 컬렉션 자체와 단일 값 사이의 동등성 비교는 일반적으로 의미가 없으며 실패할 가능성이 높다.
+
+14. @csvSource: csvSource를 활용하면 "중복 있는 코드"를 "중복 없는 코드"로 다시 구현할 수 있게끔 한다.
