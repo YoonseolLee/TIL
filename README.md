@@ -156,3 +156,50 @@
 6. asList와 List.of는 약간 다르다. 둘 다 불변의 리스트를 생성한다는 것은 동일하다.
    하지만 List.of는 Set으로 바꿀 수 없으며, null을 허용하지 않는다는 점에서 다르다.
    요약하자면 List.of가 더 까다로운 놈이다.
+
+## 2023.10.15
+
+### 우테코 연습
+
+1. validateNumberInRange(int number, int startInclusive, int endInclusive)
+   -> 검증할 숫자와 기준이 되는 두 숫자를 놓고 기준을 세워서 검증할 수 있는 메소드다.
+
+2. 중복을 검사할 때 HashSet을 활용하면 편하다. 정규식을 사용해도 된다.
+
+3. Enum은 보통 public으로 선언한다.
+
+4. Enum의 생성자를 통해 값을 저장할 수 있다.
+
+5. /\*\*
+
+   - 구매 금액에 대한 모든 검증을 진행한다.
+   - @param amount 구매 금액
+   - @return 구매 금액 (int)
+     \*/
+
+   일상적으로 validation 메소드마다 파라미터 정보, 리턴 정보를 주석으로 명시하는 것 같다.
+
+## 2023.10.16
+
+1. 보통 View에 속하는 메소드는 public static void로 선언한다. Util도 마찬가지다. (불확실)
+2. Constants, ErrorMessage는 상수이므로 public static final로 지정한다.
+3. 원시값 포장은 String, int 등등 원시타입의 값을 이용해 속성을 표현하지 않고, 의미가 있는 객체로 포장하는 것이다. 줄여 말하자면 원시 타입의 변수를 객체로 포장한 것이다.
+4. VO: 도메인에서 1개, 혹은 여러 개의 속성을 묶어서 특정 값을 나타내는 객체를 말한다.
+5. VO의 조건1. equals & hashcode 메서드를 재정의해 동등성 비교가 가능하다.
+   VO의 조건2. 불변 객체이다.
+
+## 2023.10.16
+
+1. 테스트 코드 작성 시 Given - When - Then 패턴을 활용하면 가독성 좋게 테스트 코드를 작성할 수 있다.
+
+## 2023.10.20
+
+1. Array와 ArrayList의 차이점과 특징 -> 블로그에 게시
+
+## 2023.10.21
+
+1. 반복문 생성 시 변수를 반복문 밖에서 선언하면 같은 변수를 n번 작업한다 -> 블로그 참고
+2. 숫자야구 -> strike, ball을 0으로 초기화하는 메소드를 만드는 것을 잊지 말자.
+3. boolean 변수를 활용하여, 미리 세팅을 false로 해놓은 다음, 특정 조건을 만족하는 경우 true로 바꿔서 프로그램을 종료시키는 방법이 존재한다.
+4. List<String> inputList = new ArrayList<>(Arrays.asList(new String[]{"1", "2"}))
+   -> 새 ArrayList를 생성하고, Arrays.asList 메서드를 사용하여 초기 요소로 "1"과 "2"를 가지는 문자열 배열을 변환하여 ArrayList에 대한 뷰를 생성한다. 이를 inputList에 저장한다.
