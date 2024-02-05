@@ -735,3 +735,36 @@ c. Controller 작성: 클라이언트의 요청을 받아 서비스를 호출하
 5. [length - i - 1] 을 활용하면 Array의 인덱스를 뒤집을 수 있다.
 
 6. Collections.reverse() 함수를 사용하면 List를 쉽게 뒤집을 수 있다. 단, Array가 아닌 List 전용이다. 따라서 사용 이전에 자료형이 List인지 확인하자. 또한 Collections.reverse()를 사용하는 것이 속도도 더 빠르다.
+
+## 2024.2.5
+
+## 알고리즘
+
+1. toCharArray(): String 문자열을 char형 배열로 바꿔서 반환해주는 메서드이다.
+
+2. String.valueOf() - 파라미터가 null이면 문자열 "null"을 만들어서 반환한다.
+   toString() - 대상 값이 null이면 NPE를 발생시키고 Object에 담긴 값이 String이 아니여도 출력한다.
+   NPE를 방지하기 위해 toString보다는 String.valueOf를 사용하는 것을 추천한다.
+
+3. replaceAll()
+
+String replaceAll(String regex, String replacement)
+replaceAll() 함수는 대상 문자열을 원하는 문자 값으로 변환하는 함수이다.
+첫번째 매개변수는 변환하고자 하는 대상이 될 문자열
+두번째 매개변수는 변환할 문자 값
+
+4. replace(), replaceAll() 모두 반환값이 있는 함수다.
+
+// 틀린 예
+if (sample.contains("zero")) {
+sample.replace("zero","0");
+}
+
+// 올바른 예
+if (sample.contains("zero")) {
+sample = sample.replace("zero", "0");  
+ }
+
+String sample = ""; 이 아니라 String sample;로 선언하면 에러 발생한다.
+
+6. 배열을 선언할 때 값을 넣거나 크기를 선언하는 절차를 잊지말자.
