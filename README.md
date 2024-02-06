@@ -700,7 +700,7 @@ f.예외 발생 시 스프링 예외 변환기 실행
 
 ## 2024.2.1
 
-## Spring
+## SpringBoot
 
 1. Entity, Repository, Service, API(Controller)의 작업 순서는 유동적이지만, 보통 아래와 같은 순서대로 작업한다.
 
@@ -768,3 +768,13 @@ sample = sample.replace("zero", "0");
 String sample = ""; 이 아니라 String sample;로 선언하면 에러 발생한다.
 
 6. 배열을 선언할 때 값을 넣거나 크기를 선언하는 절차를 잊지말자.
+
+## 2024.2.6
+
+## SQL
+
+1. GROUP BY와 집계함수는 아주 친하다.
+
+2. 만약 A 객체를 B와 매핑하려면, GROUP BY A를 사용하여 A에 따른 B의 집계 정보를 얻을 수 있다.
+
+3. 그러나 주의해야 할 점은, "GROUP BY"가 매핑을 생성하는 것은 아니다. "GROUP BY"는 단지 데이터를 그룹화하고, 그 그룹에 대한 요약된 정보를 제공하는 것이다. 매핑이 필요하다면, "JOIN"이나 "WHERE"절 등을 사용하여 특정 조건에 따라 행들을 연결해야 한다.
