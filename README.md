@@ -805,3 +805,12 @@ String sample = ""; 이 아니라 String sample;로 선언하면 에러 발생�
 
 4. a조건,b조건,c조건에 모두 해당하는 값을 가져올 때는 IN을 사용하자.
    EX. SELECT name, population FROM world WHERE name IN ('Korea', 'Japan', 'India');
+
+5. SQL에서 NULL과 비교 연산을 하게 되면 결과는 UNKNOWN이다.
+
+6. super key, candidate key, tuple, prime attribute, non-prime attribute에 대해 알게 되었다.
+
+7. functional dependency: 함수 종속이란 데이터베이스의 릴레이션에서 두 개의 애트리뷰트 집합 간 제약의 일종이다.
+
+8. 1NF: attribute의 value는 반드시 나누어질 수 없는 단일한 값이어야 한다.
+   2NF : 모든 non-prime attribute는 모든 key에 fully functionally dependant 해야 한다.
