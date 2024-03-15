@@ -977,3 +977,93 @@ GenericXmlApplicationContext: 이 방법은 XML 기반의 설정을 사용한다
 3. 서블릿 객체는 싱글톤이며, 멀티쓰레드를 지원한다.
 4. 쓰레드 풀이란, 미리 쓰레드를 만들어 놓았다가 필요하면 대여 후 반납하는 형식이다.
 5. WAS의 주요 튜닝 포인트는 max thread 수다.
+
+## 2024.3.15
+
+### 스프링
+
+1. @Controller : 반환 값이 String이면 뷰를 찾고, 뷰가 렌더링 된다.
+   @RestController : 반환 값이 String이면 http 메시지바디에 String을 반환한다.
+
+2. 전체(root) 로그 레벨은 기본적으로 INFO이다.
+
+3. 최근 HTTP API는 아래와 같이 리소스경로에 식별자를 넣어서 사용한다.
+   /mapping/userA
+   /users/28
+
+4. @PathVariable을 사용할 때 단일값, 다중값, 특정 파라미터 조건 매핑(ex.파라미터의 mode=debug인 경우), 헤더 조건 매핑, content-type 및 consume 매핑, accept 및 produce 매핑 등의 옵션을 사용할 수 있다.
+
+5. @RequestMapping의 종류에는 GET, POST, PUT, PATCH, DELETE가 있다.
+
+6. @PathVariable과 @RequestMapping을 자주 혼합해서 사용한다.
+
+```
+@RestController
+public class UserController {
+
+    @RequestMapping(value="/users/{userId}", method=RequestMethod.GET)
+    public User getUser(@PathVariable("userId") String userId) {
+        // userId에 해당하는 사용자 정보를 조회하여 반환
+        return userService.getUserById(userId);
+    }
+}
+
+```
+
+또는
+
+```
+@RestController
+public class UserController {
+
+    @GetMapping("/users/{userId}")
+    public User getUser(@PathVariable("userId") String userId) {
+        // userId에 해당하는 사용자 정보를 조회하여 반환
+        return userService.getUserById(userId);
+    }
+}
+
+```
+
+7. @RequestMapping은 HTTP 요청을 핸들러 메소드에 매핑하는 데 사용되며, @RequestParam은 HTTP 요청 파라미터를 메소드 파라미터에 바인딩하는 데 사용된다. 두 어노테이션은 서로 다른 목적으로 사용되지만 자주 같이 쓰인다.
+
+```
+@RestController
+public class ExampleController {
+
+    @RequestMapping(value = "/greeting", method = RequestMethod.GET)
+    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name) {
+        return "Hello, " + name + "!";
+    }
+}
+```
+
+8. 클라이언트에서 서버로 요청 데이터를 전달할 때 주로 3가지 방법이 쓰인다.
+   a. GET-쿼리 파라미터(검색,필터 등)
+   b. POST-HTML 폼(회원가입, 상품주문 등 form 사용하는 곳)
+   c. HTTP message body에 직접 데이터를 담아서 요청(json, xml 등)
+
+9. @RequestParam에 required=true를 작성하면 null은 허용되지 않는다.
+
+10. required=false로 설정해놓고 싶다면
+    Integer(기본값)는 null을 받을 수 없으므로 int로 받아야한다.
+    그리고 파라미터에 값이 없는 경우 defaultValue를 따로 설정해놓으면 된다.
+
+11. requestParamMap으로 Map을 통해 다중값을 파라미터로 가져올 수 있기는 하지만, 거의 대부분 하나만의 파라미터를 사용한다.
+
+12. @ModelAttribute 는 사용자가 전달하는 값을 오브젝트 형태(객체 형태)로 매핑해주는 어노테이션이다. 보통 폼을 통해 값을 전달할 때 자주 사용한다.
+
+13. 보통 String, int, Integer와 같은 단순타입은 @RequestParam,
+    나머지는 @ModelAttribute(argument resolver로 지정해둔 타입 예외)로
+    값을 가져온다.
+
+### 알고리즘
+
+1. bw.write(정수)를 하면 정수의 유니코드를 출력한다. 따라서 bw.write(String.valueOf(정수))형태로 출력해야 한다.
+
+2. A.comapareTo(B) : A가 B보다 작으면 음의 숫자, 같으면 0, A가 B보다 크면 양의 숫자를 반환한다. 만약 sort()와 같이 쓰일 경우, 요소가 4개라면,
+   총 3번의 비교(a-b, b-c, c-d)를 거쳐 정렬이 이루어진다.
+
+3. sort() 함수를 통해 사전 순(알파벳 순)정렬을 수행할 수 있다.
+
+4. 추가적인 정렬 옵션이 주어졌을 때, Comparable 또는 Comparable을 오버라이드하여 풀면된다.
