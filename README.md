@@ -1067,3 +1067,51 @@ public class ExampleController {
 3. sort() 함수를 통해 사전 순(알파벳 순)정렬을 수행할 수 있다.
 
 4. 추가적인 정렬 옵션이 주어졌을 때, Comparable 또는 Comparable을 오버라이드하여 풀면된다.
+
+## 2024.3.17
+
+### 알고리즘
+
+1. 만약 String이 "123"일 때, charAt(i)를 실행하면 '1','2','3'이 된다.
+   char이라고 해서 무조건 알파벳만 해당되는 것은 아니다.
+2. getNumericValue은 Character 클래스의 메소드다.
+3. Collections.sort(인자1,인자2)에서 인자2의 자리에 Collections.reverseOrder()를 넣음으로서 내림차순 정렬을 할 수 있다.
+
+## 2024.3.18
+
+### 알고리즘
+
+1. 재귀함수란?
+
+- 자신이 자신을 호출하는 함수다.
+- 논리 구조는 반복문과 같다.
+- 반복을 끝내기 위한 조건을 신중히 생각해야 한다.
+- 콜스택을 활용하기 위해 사용한다.
+- 고급 정렬 알고리즘 및 트리 탐색과 함께 일반적으로 사용된다.
+- 반복문보다 느리며 메모리를 더 많이 사용한다.
+
+2. Base case, recursive case
+   Base case: 간단히 결과를 반환하는 부분
+   Recursive case: 자기 자신을 호출하는 부분
+
+3. list가 {1,2,3}이고, map이 {1:one, 2:two, 3:three}일 때,
+   String num = map.get(1); -> one으로 가져올 수 있다.
+
+4. !!!!!! 값이 누적될 땐 항상 값을 new 또는 0으로 초기화 해주자 !!!!!!
+
+5. 함수의 실행 횟수를 구하려면 static 변수를 만든 후, 함수 내에 ++로 카운트하면 된다.
+
+### 스프링
+
+1. HTTP 메시지 바디를 통해 데이터가 넘어올 땐, @RequestBody를 사용해야 한다.
+
+2. @RequestBody 대신 HttpEntity(RequestEntity, ResponseEntity)를 사용할 수 있는데, 코드가 복잡해지지만 더 유동적이다는 장점이 있다.
+
+3. @ResponseBody를 사용할 때 return "ok"를 하면 뷰가 아닌 문자열을 HTTP 바디에 반환한다.
+
+4. @RequestBody는 HTTP 요청의 본문을, @ModelAttribute는 HTTP GET 요청의 쿼리파라미터 또는 POST 요청의 form 데이터를 자바 객체에 바인딩한다.
+
+5. @RequestBody 요청: JSON 요청 -> HTTP 메시지 컨버터 -> 객체
+   @ResponseBody 응답: 객체 -> HTTP 메시지 컨버터->JSON 응답
+
+6. @Controller 대신에 @RestController를 사용하면, 해당 컨트롤러에 모두 @ResponseBody가 적용되는 효과가 있다.
