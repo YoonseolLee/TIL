@@ -1115,3 +1115,93 @@ public class ExampleController {
    @ResponseBody 응답: 객체 -> HTTP 메시지 컨버터->JSON 응답
 
 6. @Controller 대신에 @RestController를 사용하면, 해당 컨트롤러에 모두 @ResponseBody가 적용되는 효과가 있다.
+
+## 2024.3.24
+
+### 스프링
+
+1. BindingResult란, 스프링이 제공하는 검증오류를 보관하는 객체이다. - 검증오류 발생시 여기에 저장이 된다.
+
+2. Field Error: 단일 에러 (ex.비밀번호가 너무 작은 경우), Object Error: 글로벌(복합) 에러(ex.가격 \* 수량의 합은 10,000원 이하인 경우)
+
+3. @ModelAttribute에 바인딩 시 타입 오류가 발생하면?
+
+- BindingResult가 없으면 400 오류가 발생하면서 컨트롤러가 호출되지 않고, 오류 페이지로 이동한다.
+- BindingResult 가 있으면 오류 정보(FieldError(중요))를 BindingResult 에 담아서 컨트롤러를 정상 호출한다.
+
+4. BindingResult에 검증 오류를 적용하는 3가지 방법
+
+- @ModelAttribute의 객체에 타입 오류 등으로 바인딩이 실패하는 경우 스프링이 FieldError를 생성해서 BindingResult에 넣어준다.
+- 개발자가 직접 넣는다.
+- Validator 사용
+
+5. 파라미터에서 BindingResult는 검증할 대상 바로 다음에 와야한다.
+
+6. BindingResults는 인터페이스이고, 이는 Errors 인터페이스를 상속받는다.
+   BindingResults는 Errors보다 추가적인 기능을 제공하기 때문에
+   주로 관례상 BindingResult를 더 많이 사용한다.
+
+7. FieldError(ObjectError도 유사)는 두 가지 생성자를 제공한다.
+
+- FieldError(String objectName, String field, String defaultMessage);
+- public FieldError(String objectName, String field, @Nullable Object
+  rejectedValue, boolean bindingFailure, @Nullable String[] codes, @Nullable
+  Object[] arguments, @Nullable String defaultMessage)
+
+(field : 오류 필드
+rejectedValue : 사용자가 입력한 값(거절된 값)
+bindingFailure : 타입 오류 같은 바인딩 실패인지, 검증 실패인지 구분 값
+codes : 메시지 코드
+arguments : 메시지에서 사용하는 인자
+defaultMessage : 기본 오류 메시지)
+
+8. 타임리프의 사용자 입력 값 유지!
+   th:field="\*{price}"
+   타임리프의 th:field 는 매우 똑똑하게 동작하는데, 정상 상황에는 모델 객체의 값을 사용하지만, 오류가 발생하면 FieldError 에서 보관한 값을 사용해서 값을 출력한다.
+
+9. 스프링의 바인딩 오류처리 (만약 int age에 'abc'를 입력한다면?) -> 중요!!!
+   타입 오류로 바인딩에 실패하면 스프링은 FieldError 를 생성하면서 사용자가 입력한 값을 넣어둔다. 그리고 해당 오류를 BindingResult에 담아서 컨트롤러를 호출한다.
+   따라서 타입 오류 같은 바인딩 실패시에도 사용자의 오류 메시지를 정상 출력할 수 있다.
+
+## 2024.4.9
+
+- 프로젝트를 세번이나 갈아엎는 바람에 정신이 없어서 그동안 TIL에 신경을 제대로 못쓴 것 같아서 아쉽다.
+  다시 TIL 작성을 재개할 것이다!!!!!!!! 화이팅 ~~
+
+## 프로그래머스
+
+1. 문제: 모의고사
+   배운점: 두 배열의 값이 동일한지 비교하고자 할 때, 두 배열의 값이 다르다면 인덱스를 잘 조정하면 된다. 인덱스가 키다.
+
+- 만약 answer가 {5,4,3,2,1,5,4,3,2,1}이고 찍기배열이 {1,2,3,4,5}라고 가정하자.
+  만약 5번째 인덱스에 있는 5를 비교하려고 할 때 일반적인 반복문으로 구할 수가 없다. 왜냐하면 길이가 다르기 때문이다.
+  따라서 이러한 경우에는 인덱스에 i % 5를 작성하면 해결할 수 있다.
+  ex. i = 5, 찍기배열 길이 = 5, 찍기배열 목표 인덱스 [0] -> [i % 5]
+  -> 5 / 5의 나머지 = 0이다. 따라서 찍기배열의 0번째 인덱스와 비교하게 된다.
+
+2. 두 개 이상의 정수들 중에서 max값을 구하는 로직
+   int max = Math.max(score[0], Math.max(score[1], score[2]));
+   알다시피 max()는 두 개의 인자를 받는데, 세 개는 어떻게 받아야할까?
+   쉽다. 두번째 인자로 Math.max(비교값1,비교값2)를 넣으면 된다.
+
+네개의 점수들도 마찬가지 일 것이다.
+
+Math.max(Math.max(score[0],score[1]), Math.max(score[2],score[3]));
+
+## 스프링
+
+3. 엔터티는 protected 기본 생성자를 되도록이면 설정하는 것이 좋다.
+   리플렉션 때문이라고 하는데 이에 대해 더 알아볼 예정이다.
+
+4. save()는 void가 아닌 객체(주로 Entity로 설정)를 반환한다.
+
+5. CrudRepository -> JpaRepository -> 사용자가 만든 레포지토리의 상속구조가 있다.
+
+6. HTTP 상태코드는 헤더에, 게시글 내용같은 것은 body에 담아서 ResponseEntity에 담아서 사용자에게 전달한다.
+
+7. 직렬화란 외부의 시스템에서 사용할 수 있도록 바이트 형태로 데이터를 변환하는 기술이다.
+   간단하게 말하면 코드 내의 객체나, 해시테이블, 딕셔너리 등을 JSON으로 변환하는 것을 의미한다.
+
+역직렬화란 반대로 외부 시스템의 바이트 형태의 데이터(Json)을 객체나 해시 테이블, 딕셔너리 등으로 변환하는 것을 의미한다.
+
+8. @Transactional이 붙은 메소드는 동일 트랜잭션에서 작업이 실행된다.
