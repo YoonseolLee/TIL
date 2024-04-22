@@ -1273,3 +1273,64 @@ Math.max(Math.max(score[0],score[1]), Math.max(score[2],score[3]));
 
 10. 단순하게 파라미터로 컨트롤러를 처리할 수 있으면 Argument resolver를 사용하되, 만약 HTTP 메시지바디(@RequestBody 또는 HttpEntitiy)를 통해 처리해야 한다면 Argument resolver가 http message converter를 호출하여 컨트롤러를 처리한다.
     즉, HTTP Message Converter의 위치는 Argument Resolver에 위치한다.
+
+## 2024.4.21
+
+## 스프링
+
+1. 웹 애플리케이션은 사용자 요청별로 별도의 쓰레드가 할당되고, 서블릿 컨테이너 안에서 실행된다.
+
+2. 예외가 발생할 때 예외 전파흐름.
+   WAS(여기까지 전파) <- 필터 <- 서블릿 <- 인터셉터 <- 컨트롤러(예외 발생)
+
+3.
+
+- 예외가 발생해서 WAS까지 전파된다.
+- 그다음 WAS는 오류 페이지 경로를 찾아서 내부에서 오류 페이지를 호출한다. 이때 오류 페이지 경로로 필터, 서블릿, 인터셉터, 컨트롤러가 모두 다시 호출된다.
+
+4. 따라서 서버 내부에서 오류 페이지를 호출한다고 해서 해당 필터나 인터셉트가 한번 더 호출되는 것은 매
+   우 비효율적이다.
+   결국 클라이언트로 부터 발생한 정상 요청인지, 아니면 오류 페이지를 출력하기 위한 내부 요청인지 구분할 수 있어야한다. 서블릿은 이런 문제를 해결하기 위해 DispatcherType 이라는 추가 정보를 제공한다.
+
+5. 필터는 dispatchType으로 필터의 중복호출을 방지하고, 인터셉터는 URL을 exclude하여서 경로 정보로 중복 호출을 제거한다.
+
+6. 스프링 부트는 예외처리 과정을 모두 기본으로 제공한다.
+
+- ErrorPage 를 자동으로 등록한다. 이때 /error 라는 경로로 기본 오류 페이지를 설정한다.
+  new ErrorPage("/error") , 상태코드와 예외를 설정하지 않으면 기본 오류 페이지로 사용된다.
+  서블릿 밖으로 예외가 발생하거나, response.sendError(...) 가 호출되면 모든 오류는 /error 를
+  호출하게 된다.
+- BasicErrorController 라는 스프링 컨트롤러를 자동으로 등록한다. ErrorPage 에서 등록한 /error 를 매핑해서 처리하는 컨트롤러다.
+
+7. BasicErrorController 컨트롤러는 예외에 대한 자세한 정보들을 model에 담아서 뷰에 전달한다. 뷰 템플릿은 이 값을 활용해서
+   출력할 수 있다.
+
+## 2024.4.22
+
+## 스프링
+
+1. 오류 페이지는 단순히 고객에게 오류 화면을 보여주면 끝이지만, API는 각 오류 상황에 맞는 오류 응답 스펙을 정하고, JSON으로 데이터를 내려주어야 한다.
+
+2. errorHtml(): view를 제공한다.
+   error(): 그외 경우에 호출되고 ResponseEntity로 HTTP body에 JSON을 반환한다.
+
+3. HTML 페이지 제공: BasicErrorController를 사용하는 것이 좋다.
+   API 오류 처리: @ExceptionHandler를 사용하는 것이 좋다.
+
+4. 스프링 MVC는 컨트롤러(핸들러) 밖으로 예외가 던져진 경우 예외를 해결하고, 동작을 새로 정의할 수 있는 방법을 제
+   공한다. 컨트롤러 밖으로 던져진 예외를 해결하고, 동작 방식을 변경하고 싶으면 HandlerExceptionResolver 를
+   사용하면 된다. 줄여서 ExceptionResolver 라 한다.
+
+5. 반환 값에 따른 동작 방식
+   HandlerExceptionResolver 의 반환 값에 따른 DispatcherServlet 의 동작 방식은 다음과 같다.
+
+- 빈 ModelAndView: new ModelAndView() 처럼 빈 ModelAndView 를 반환하면 뷰를 렌더링 하지 않고,
+  정상 흐름으로 서블릿이 리턴된다.
+- ModelAndView 지정: ModelAndView 에 View , Model 등의 정보를 지정해서 반환하면 뷰를 렌더링 한
+  다.
+- null: null 을 반환하면, 다음 ExceptionResolver 를 찾아서 실행한다. 만약 처리할 수 있는
+  ExceptionResolver 가 없으면 예외 처리가 안되고, 기존에 발생한 예외를 서블릿 밖으로 던진다.
+
+6. 예외가 발생하면 WAS까지 예외가 던져지고, WAS에서 오류 페이지 정보를 찾아서 다시 /error 를 호출하는 과정은
+   생각해보면 너무 복잡하다. ExceptionResolver 를 활용하면 예외가 발생했을 때 이런 복잡한 과정 없이
+   문제를 깔끔하게 해결할 수 있다.
